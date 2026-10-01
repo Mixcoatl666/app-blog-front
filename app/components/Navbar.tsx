@@ -14,8 +14,8 @@ const Navbar = () => {
     const checkAuth = async () => {
       try {
         const response = await fetch("http://localhost:5001/check-auth", {
-            method: "GET",
-            credentials: "include"
+          method: "GET",
+          credentials: "include",
         });
         const data = await response.json();
         setIsAuthenticated(data.authenticated);
@@ -25,6 +25,18 @@ const Navbar = () => {
     };
     checkAuth();
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch("http://localhost:5001/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.log("Error al cerrar sesión:", error);
+    }
+  };
 
   return (
     <nav className="bg-indigo-600 text-white p-4">
@@ -54,15 +66,27 @@ const Navbar = () => {
               </Link>
             </li>
           )}
-          <li>
-            <Link
-              href="/page/login"
-              className="flex items-center hover:text-gray-300"
-            >
-              <ArrowLeftEndOnRectangleIcon className="mr-2 h-6 w-6" />
-              Salir
-            </Link>
-          </li>
+          {!isAuthenticated ? (
+            <li>
+              <Link
+                href="/page/login"
+                className="flex items-center hover:text-gray-300"
+              >
+                <ArrowLeftEndOnRectangleIcon className="mr-2 h-6 w-6" />
+                Iniciar Sesión
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <button
+                onClick={handleLogout}
+                className="flex items-center hover:text-gray-300"
+              >
+                <ArrowLeftEndOnRectangleIcon className="mr-2 h-6 w-6" />
+                Cerrar Sesión
+              </button>
+            </li>
+          )}
         </ul>
       </div>
     </nav>
