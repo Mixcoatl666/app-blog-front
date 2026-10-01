@@ -1,12 +1,13 @@
 'use client';
 import { useState, useEffect } from "react";
-
+import Card from "./components/Card";
 import Layout from "./components/layout";
 
 interface Nota {
-  id:number;
+  idnota:number;
   titulo:string;
   descripcion:string;
+  imagen_url: string;
   create_at: Date;
 }
 
@@ -16,7 +17,7 @@ export default function Home() {
   console.log(notas);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/notas")
+    fetch("http://localhost:5001/notas")
       .then(response => response.json())
       .then(data => setNotas(data))
       .catch(error => console.log("Error al obtener notas:", error))
@@ -29,12 +30,13 @@ export default function Home() {
         <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {
             notas.map((nota) => (
-              <div key={nota.id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <h2 className="text-black text-2xl font-bold mb-2">{nota.titulo}</h2>
-                <p className="text-gray-700">{nota.descripcion.slice(0, 100)}{nota.descripcion.length > 100 ? "..." : ""}</p>
-                <a href={`/nota/${nota.id}`} className="text-indigo-600 font-semibold hover:text-indigo-800">Leer más</a>
-                <p className="text-gray-500 text-sm mt-2">{new Date(nota.create_at).toLocaleDateString()}</p>
-              </div> 
+              <Card
+                key={nota.idnota}
+                id={nota.idnota.toString()}
+                titulo={nota.titulo}
+                descripcion={nota.descripcion}
+                imagen_url={nota.imagen_url}
+              />  
             ))
           }
         </div>
