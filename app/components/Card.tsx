@@ -6,9 +6,11 @@
     titulo: string;
     descripcion: string;
     imagen_url: string;
+    autor: string;
+    create_at: Date;
  }
 
-  const Card: React.FC<CardProps> = ({ id, titulo, descripcion, imagen_url }) => {
+  const Card: React.FC<CardProps> = ({ id, titulo, descripcion, imagen_url, autor, create_at }) => {
      return (
          <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-100/60">
              {imagen_url && (
@@ -29,6 +31,12 @@
                  <p className="line-clamp-3 text-sm leading-6 text-slate-600">
                      {descripcion.length > 100 ? `${descripcion.slice(0, 100)}...` : descripcion}
                  </p>
+                <p className="mt-4 text-sm font-medium text-slate-500">
+                    Autor: {autor}
+                </p>
+                <p className="mt-2 text-sm font-medium text-slate-500">
+                    Creado el: {new Date(create_at).toLocaleDateString()}
+                </p>
 
                  <Link
                      href={`page/nota/${id}`}

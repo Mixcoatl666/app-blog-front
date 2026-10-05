@@ -8,6 +8,7 @@ interface Nota {
   titulo:string;
   descripcion:string;
   imagen_url: string;
+  autor: string;
   create_at: Date;
 }
 
@@ -36,6 +37,8 @@ export default function Home() {
                 titulo={nota.titulo}
                 descripcion={nota.descripcion}
                 imagen_url={nota.imagen_url}
+                autor={nota.autor}
+                create_at={nota.create_at}
               />  
             ))
           }
