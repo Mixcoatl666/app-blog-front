@@ -1,12 +1,7 @@
 "use client";
 import React, { useEffect, useState, use } from "react";
-import Layout from "../../../components/layout";
-
-interface Nota {
-  id: string;
-  titulo: string;
-  descripcion: string;
-}
+import Layout from "../../../components/Layout";
+import { Nota } from "../../../types/nota";
 
 const NotaPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);

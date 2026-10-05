@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {
-  ArrowLeftEndOnRectangleIcon,
-  MagnifyingGlassIcon,
-  PlusCircleIcon,
-} from "@heroicons/react/24/solid";
 import Link from "next/link";
 
-const Navbar = () => {
+import {
+  ArrowLeftEndOnRectangleIcon,
+  PlusCircleIcon
+} from "@heroicons/react/24/solid";
+
+import SearchBar from "./SearchBar";
+import { Nota } from "../types/nota";
+
+  interface NavbarProps {
+    notas: Nota[]; 
+    setFilteredNotas?: (notas: Nota[]) => void;
+  }
+
+const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   console.log(isAuthenticated);
 
@@ -44,16 +52,12 @@ const Navbar = () => {
         <Link href="/" className="text-xl font-bold">
           Blog de Notas
         </Link>
-        <div className="flex-grow">
-          <div className="relative max-w-md mx-auto">
-            <input
-              type="text"
-              placeholder="Buscar notas..."
-              className="bg-gray-300 text-black  px-2 rounded-full pl-10 pr-4 py-2 w-full focus:outline"
-            />
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" />
-          </div>
-        </div>
+
+        <SearchBar 
+          notas={notas} 
+          setFilteredNotas={setFilteredNotas} 
+        />
+
         <ul className="flex space-x-6 items-center">
           {isAuthenticated && (
             <li>
