@@ -1,28 +1,35 @@
 "use client";
-import React, { useEffect, useState, use } from "react";
+import React, { useEffect, useState } from "react";
+
 import Layout from "../../../components/Layout";
-import { Nota } from "../../../types/nota";
 
-const NotaPage = ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = use(params);
-  const [nota, setNota] = useState<Nota | null>(null);
+import { useNotaContext } from "../../../context/NotaProvider";
+import { Nota } from "@/app/types/nota";
 
-  console.log(nota);
+const NotaPage = ({ params }: { params: Promise<{ id: string }> }) => { 
+  const [nota, setNota] = useState<Nota | null>(null)
+  const { fetchNotaById } = useNotaContext()
 
   useEffect(() => {
-    fetch(`http://localhost:5001/notas/${id}`)
-      .then((response) => response.json())
-      .then((data) => setNota(data))
-      .catch((error) => console.log("Error al obtener nota:", error));
-  }, [id]);
+    const loadNota = async () => {
+      try {
+        const resolvedParams = await params
+        const notaData = await fetchNotaById(parseInt(resolvedParams.id))
+        setNota(notaData)
+      } catch (error) {
+        console.error('Error al obtener la nota', error)
+      }
+    }
+    loadNota()
+  }, [params, fetchNotaById])
 
   if (!nota) {
     return (
       <Layout>
         <div className="container mx-auto py-10">
-          <p className="text-center">Cargando Nota...</p>
+          <p className="text-center text-gray-500 mt-8">Cargando Nota...</p>
         </div>
-      </Layout>
+      </Layout> 
     );
   }
 
