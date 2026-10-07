@@ -19,4 +19,5 @@ export interface NotaContextType {
   fetchNotaById: (id: number) => Promise<Nota | null>
   toggleFavorito: (id: number) => void
   loading: boolean
+  createNota: (newNota: Partial<Nota>) => Promise<{ success: boolean, message:string }>
 }

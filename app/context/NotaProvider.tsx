@@ -26,7 +26,7 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
         setLoading(false);
       }
     };
-    fetchNotas();
+    void fetchNotas();
   }, []);
 
   const fetchNotaById = async (id: number): Promise<Nota | null> => {
@@ -43,6 +43,27 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
       return null;
     }
   };
+
+  const createNota = async (newNota: Partial<Nota>): Promise<{ success: boolean, message:string }> => {
+    try {
+      const response = await fetch("http://localhost:5001/create-notas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newNota),
+      })
+
+      if (response.ok) {
+        const createdNota = await response.json()
+        setNotas((prevNotas) => [...prevNotas, createdNota])
+        return { success: true, message: "Nota creada correctamente" }
+      } else {
+        return { success: false, message: "Error al crear la nota" }
+      }
+    } catch (error) {
+      console.error("Error en la solicitud: ", error)
+      return { success: false, message: "Error en la solicitud" }
+    }
+  }
 
   const toggleFavorito = (id: number) => {
     setNotas((prevNotas) =>
@@ -66,8 +87,8 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
       body: JSON.stringify({
         is_favorite: updateNotas ? !updateNotas.is_favorite : false,
       }),
-    }).catch((error) => console.log("Error al actualizar favorito:", error));
-  };
+    }).catch((error) => console.log("Error al actualizar favorito:", error))
+  }
 
   return (
     <NotaContext.Provider
@@ -78,6 +99,7 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
         toggleFavorito,
         loading,
         fetchNotaById,
+        createNota,
       }}
     >
       {children}

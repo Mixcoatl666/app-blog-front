@@ -35,9 +35,21 @@ const NotaPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <Layout>
-      <div className="container mx-auto py-10">
-        <h1 className="text-4xl font-bold mb-6">{nota.titulo}</h1>
-        <p>{nota.descripcion}</p>
+      <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
+        {
+          nota.imagen_url && (
+            <div className="mb-6">
+              <img src={nota.imagen_url} alt={nota.titulo} className="w-full h-full object-cover rounded-lg shadow-md"/>
+            </div>
+          )
+        }
+        <h1 className="text-4xl font-bold text-indigo-600 mb-4">{nota.titulo}</h1>
+        <div className="flex items-center text-gray-500 mb-6">
+          <p className="text-sm">Publicado: {(new Date(nota.create_at)).toLocaleDateString()}</p>
+          <span className="mx-2"> | </span>
+          <p className="text-sm">Autor: {nota.autor}</p>
+        </div>
+        <p className="text-lg text-gray-700 leading-relaxed">{nota.descripcion}</p>
       </div>
     </Layout>
   );
