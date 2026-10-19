@@ -10,11 +10,12 @@ import SearchBar from "./SearchBar";
 import { Nota } from "../types/nota";
 
   interface NavbarProps {
-    notas: Nota[]; 
-    setFilteredNotas?: (notas: Nota[]) => void;
+    notas: Nota[]
+    setFilteredNotas?: (notas: Nota[]) => void
+    onOpenCreateModal: () => void
   }
 
-const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas }) => {
+const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas, onOpenCreateModal }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   console.log(isAuthenticated);
 
@@ -61,13 +62,13 @@ const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas }) => {
         <ul className="flex space-x-6 items-center">
           {isAuthenticated && (
             <li>
-              <Link
-                href="/crear"
+              <button
+                onClick={onOpenCreateModal}
                 className="flex items-center hover:text-gray-300"
               >
                 <PlusCircleIcon className="mr-2 h-6 w-6" />
                 Crear Nota
-              </Link>
+              </button>
             </li>
           )}
           {!isAuthenticated ? (

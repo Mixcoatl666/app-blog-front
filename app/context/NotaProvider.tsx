@@ -1,5 +1,12 @@
 'use client'
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import { Nota, NotaContextType } from "../types/nota";
 
@@ -29,7 +36,7 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
     void fetchNotas();
   }, []);
 
-  const fetchNotaById = async (id: number): Promise<Nota | null> => {
+  const fetchNotaById = useCallback(async (id: number): Promise<Nota | null> => {
     const existingNota = notas.find((nota) => nota.idnota === id);
     if (existingNota) return existingNota;
 
@@ -42,13 +49,14 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Error al obtener la nota:", error);
       return null;
     }
-  };
+  }, [notas]);
 
-  const createNota = async (newNota: Partial<Nota>): Promise<{ success: boolean, message:string }> => {
+  const createNota = useCallback(async (newNota: Partial<Nota>): Promise<{ success: boolean, message:string }> => {
     try {
-      const response = await fetch("http://localhost:5001/create-notas", {
+      const response = await fetch("http://localhost:5001/create-nota", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials:"include",
         body: JSON.stringify(newNota),
       })
 
@@ -63,45 +71,44 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Error en la solicitud: ", error)
       return { success: false, message: "Error en la solicitud" }
     }
-  }
+  }, []);
 
-  const toggleFavorito = (id: number) => {
+  const toggleFavorito = useCallback((id: number) => {
+    const nota = notas.find((n) => n.idnota === id);
+    if (!nota) return;
+
+    const nuevoValor = !nota.is_favorite;
+
     setNotas((prevNotas) =>
-      prevNotas.map((nota) =>
-        nota.idnota === id
-          ? {
-              ...nota,
-              is_favorite: !nota.is_favorite,
-            }
-          : nota,
+      prevNotas.map((n) =>
+        n.idnota === id ? { ...n, is_favorite: nuevoValor } : n,
       ),
     );
 
-    const updateNotas = notas.find((nota) => nota.idnota === id);
-
-    fetch(`http://localhost:5001/notas/favoritos/${updateNotas?.idnota}`, {
+    fetch(`http://localhost:5001/notas/favoritos/${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        is_favorite: updateNotas ? !updateNotas.is_favorite : false,
-      }),
+      body: JSON.stringify({ is_favorite: nuevoValor }),
     }).catch((error) => console.log("Error al actualizar favorito:", error))
-  }
+  }, [notas]);
+
+  const value = useMemo(
+    () => ({
+      notas,
+      filteredNotas,
+      setFilteredNotas,
+      toggleFavorito,
+      loading,
+      fetchNotaById,
+      createNota,
+    }),
+    [notas, filteredNotas, toggleFavorito, loading, fetchNotaById, createNota],
+  );
 
   return (
-    <NotaContext.Provider
-      value={{
-        notas,
-        filteredNotas,
-        setFilteredNotas,
-        toggleFavorito,
-        loading,
-        fetchNotaById,
-        createNota,
-      }}
-    >
+    <NotaContext.Provider value={value}>
       {children}
     </NotaContext.Provider>
   );

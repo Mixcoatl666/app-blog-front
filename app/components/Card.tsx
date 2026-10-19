@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthProvider";
 import { useNotaContext } from "../context/NotaProvider";
 
 import { CardProps } from "../types/nota";
+import { formatNotaDate } from "../utils/date";
 
 const  Card: React.FC<CardProps> = ({
   id
@@ -71,7 +72,7 @@ const  Card: React.FC<CardProps> = ({
             </span>
             <span className="truncate font-medium text-slate-700">{nota.autor}</span>
             <span aria-hidden="true">·</span>
-            <time className="whitespace-nowrap">{(new Date(nota.create_at)).toLocaleDateString()}</time>
+            <time className="whitespace-nowrap">{formatNotaDate(nota.create_at)}</time>
           </div>
  
           <Link

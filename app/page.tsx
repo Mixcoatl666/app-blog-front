@@ -1,9 +1,12 @@
 "use client";
+import { useState } from "react";
+
 import { AuthProvider } from "./context/AuthProvider";
 import { NotaProvider, useNotaContext } from "./context/NotaProvider";
 
 import Card from "./components/Card";
 import Layout from "./components/Layout";
+import { CreateNotaModal } from "./components/CreateNotaModal";
 
 export default function Home() {
 return (
@@ -16,14 +19,22 @@ return (
 }
 
 function HomeContent(){
-     const { filteredNotas, loading } = useNotaContext()
+  const { filteredNotas, loading, createNota } = useNotaContext()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const handleModalOpen = () => {
+    setIsModalOpen(true)
+  }
+  const handleModalClose = () => {
+    setIsModalOpen(false)
+  }
+
 
   if (loading) {
     return <p>Cargando Articulos...</p>;
   }
 
   return (
-      <Layout>
+      <Layout onOpenCreateModal={handleModalOpen}>
         <div className="container mx-auto py-10">
           <h1 className="text-4xl font-bold mb-6 text-indigo-600 text-center">
             Notas
@@ -36,6 +47,7 @@ function HomeContent(){
               />
             ))}
           </div>
+          {isModalOpen && <CreateNotaModal onClose={handleModalClose} onSubmit={createNota}/>}
         </div>
       </Layout>
   );

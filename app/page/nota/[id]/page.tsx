@@ -5,6 +5,7 @@ import Layout from "../../../components/Layout";
 
 import { useNotaContext } from "../../../context/NotaProvider";
 import { Nota } from "@/app/types/nota";
+import { formatNotaDate } from "@/app/utils/date";
 
 const NotaPage = ({ params }: { params: Promise<{ id: string }> }) => { 
   const [nota, setNota] = useState<Nota | null>(null)
@@ -45,7 +46,7 @@ const NotaPage = ({ params }: { params: Promise<{ id: string }> }) => {
         }
         <h1 className="text-4xl font-bold text-indigo-600 mb-4">{nota.titulo}</h1>
         <div className="flex items-center text-gray-500 mb-6">
-          <p className="text-sm">Publicado: {(new Date(nota.create_at)).toLocaleDateString()}</p>
+           <p className="text-sm">Publicado: {formatNotaDate(nota.create_at)}</p>
           <span className="mx-2"> | </span>
           <p className="text-sm">Autor: {nota.autor}</p>
         </div>
