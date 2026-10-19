@@ -20,4 +20,5 @@ export interface NotaContextType {
   toggleFavorito: (id: number) => void
   loading: boolean
   createNota: (newNota: Partial<Nota>) => Promise<{ success: boolean, message:string }>
+  deleteNota: (id: number) => Promise<void>
 }

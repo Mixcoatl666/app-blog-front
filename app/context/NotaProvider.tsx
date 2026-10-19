@@ -51,6 +51,26 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [notas]);
 
+  const deleteNota = useCallback(async (id: number) => {
+    try {
+      const response = await fetch(`http://localhost:5001/notas/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+      })
+
+      if (!response.ok) {
+        throw new Error("Hubo un error al eliminar la nota")
+      }
+
+      setNotas(prev => prev.filter(notas => notas.idnota !== id))
+    } catch (error) {
+      console.log('Error al eliminar la nota', error)
+    }
+  }, [])
+
   const createNota = useCallback(async (newNota: Partial<Nota>): Promise<{ success: boolean, message:string }> => {
     try {
       const response = await fetch("http://localhost:5001/create-nota", {
@@ -103,8 +123,9 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
       loading,
       fetchNotaById,
       createNota,
+      deleteNota
     }),
-    [notas, filteredNotas, toggleFavorito, loading, fetchNotaById, createNota],
+    [notas, filteredNotas, toggleFavorito, loading, fetchNotaById, createNota, deleteNota],
   );
 
   return (

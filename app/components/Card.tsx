@@ -45,7 +45,7 @@ const  Card: React.FC<CardProps> = ({
       )}
 
       {nota.imagen_url && (
-        <div className="relative aspect-[16/9] overflow-hidden bg-slate-100">
+        <div className="relative aspect-video overflow-hidden bg-slate-100">
           <img
             src={nota.imagen_url}
             alt={nota.titulo}
