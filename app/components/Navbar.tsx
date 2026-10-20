@@ -3,11 +3,13 @@ import Link from "next/link";
 
 import {
   ArrowLeftEndOnRectangleIcon,
+  HeartIcon,
   PlusCircleIcon
 } from "@heroicons/react/24/solid";
 
 import SearchBar from "./SearchBar";
 import { Nota } from "../types/nota";
+import { useNotaContext } from "../context/NotaProvider";
 
   interface NavbarProps {
     notas: Nota[]
@@ -17,7 +19,19 @@ import { Nota } from "../types/nota";
 
 const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas, onOpenCreateModal }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showingFavorites, setShowingFavorites] = useState(false);
   console.log(isAuthenticated);
+  const { fetchNotas, fetchFavoritos } = useNotaContext()
+
+  const handleFavorites = async () => {
+    if (showingFavorites) {
+      await fetchNotas();
+    } else {
+      await fetchFavoritos();
+    }
+
+    setShowingFavorites((prev) => !prev);
+  };
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -61,15 +75,25 @@ const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas, onOpenCreateMo
 
         <ul className="flex space-x-6 items-center">
           {isAuthenticated && (
-            <li>
+            <>
               <button
-                onClick={onOpenCreateModal}
                 className="flex items-center hover:text-gray-300"
+                onClick={() => void handleFavorites()}
+                aria-pressed={showingFavorites}
               >
-                <PlusCircleIcon className="mr-2 h-6 w-6" />
-                Crear Nota
+                <HeartIcon className="mr-2 h-5 w-5" />
+                Favoritos
               </button>
-            </li>
+              <li>
+                <button
+                  onClick={onOpenCreateModal}
+                  className="flex items-center hover:text-gray-300"
+                >
+                  <PlusCircleIcon className="mr-2 h-6 w-6" />
+                  Crear Nota
+                </button>
+              </li>
+            </>
           )}
           {!isAuthenticated ? (
             <li>
