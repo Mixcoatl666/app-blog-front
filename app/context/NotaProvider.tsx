@@ -66,6 +66,7 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       setNotas(prev => prev.filter(notas => notas.idnota !== id))
+      setFilteredNotas(prev => prev.filter(nota => nota.idnota !== id))
     } catch (error) {
       console.log('Error al eliminar la nota', error)
     }

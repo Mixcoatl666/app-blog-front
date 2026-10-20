@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { Nota } from "../types/nota";
 
@@ -54,9 +55,9 @@ export const CreateNotaModal: React.FC<CreateNotaModalProps> = ({ onClose, onSub
                         type="button"
                         onClick={onClose}
                         aria-label="Cerrar modal"
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-2xl leading-none text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:hover:bg-slate-800 dark:hover:text-slate-200"
                     >
-                        ×
+                        <XMarkIcon className="h-5 w-5" aria-hidden="true" />
                     </button>
                 </div>
 

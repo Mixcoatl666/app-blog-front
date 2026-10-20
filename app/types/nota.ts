@@ -10,6 +10,7 @@ export interface Nota {
 
 export interface CardProps {
     id: number;
+    deleteNota: (id: number) => Promise<void>
 }
 
 export interface NotaContextType {
