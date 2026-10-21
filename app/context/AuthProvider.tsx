@@ -28,7 +28,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({children}) 
                      setUsuarioId(null)
                 }
             } catch (error) {
-                console.log('Error al verificar el estado de autenticación', error)
+                console.error('Error al verificar el estado de autenticación', error)
                 setIsAuthenticated(false)
                 setUsuario("")
                 setUsuarioId(null)
@@ -56,7 +56,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({children}) 
                 return {success: false, message:'Registro no exitoso'}
             }
         } catch (error) {
-            console.log('Error al registrarse: ', error)
+            console.error('Error al registrarse: ', error)
             return {success: false, message:'Registro no exitoso'}
         }
     }

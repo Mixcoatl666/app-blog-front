@@ -45,7 +45,7 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
       setNotas(notasConFavoritos);
       setFilteredNotas(notasConFavoritos);
     } catch (error) {
-      console.log("Error al obtener notas:", error);
+      console.error("Error al obtener notas:", error);
     } finally {
       setLoading(false);
     }
@@ -94,7 +94,7 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
       setNotas((prev) => prev.filter((notas) => notas.idnota !== id));
       setFilteredNotas((prev) => prev.filter((nota) => nota.idnota !== id));
     } catch (error) {
-      console.log("Error al eliminar la nota", error);
+      console.error("Error al eliminar la nota", error);
     }
   }, []);
 
@@ -145,7 +145,7 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
         },
         credentials: "include",
         body: JSON.stringify({ is_favorite: nuevoValor }),
-      }).catch((error) => console.log("Error al actualizar favorito:", error));
+      }).catch((error) => console.error("Error al actualizar favorito:", error));
     },
     [notas],
   );
@@ -163,7 +163,7 @@ export const NotaProvider: React.FC<{ children: React.ReactNode }> = ({
       setNotas(favoritos)
       setFilteredNotas(favoritos)
     } catch (error) {
-      console.log("Error al hacer fetch en favoritos: ", error)
+      console.error("Error al hacer fetch en favoritos: ", error)
     }
   }, []);
 
