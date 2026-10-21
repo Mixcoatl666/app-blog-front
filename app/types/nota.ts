@@ -6,6 +6,7 @@ export interface Nota {
   autor: string;
   create_at: Date;
   is_favorite: boolean;
+  user_id: number | null
 }
 
 export interface CardProps {
