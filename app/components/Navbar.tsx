@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 
 import {
@@ -10,18 +10,18 @@ import {
 import SearchBar from "./SearchBar";
 import { Nota } from "../types/nota";
 import { useNotaContext } from "../context/NotaProvider";
+import { useAuth } from "../context/AuthProvider";
 
-  interface NavbarProps {
-    notas: Nota[]
-    setFilteredNotas?: (notas: Nota[]) => void
-    onOpenCreateModal: () => void
-  }
+interface NavbarProps {
+  notas: Nota[]
+  setFilteredNotas?: (notas: Nota[]) => void
+  onOpenCreateModal: () => void
+}
 
 const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas, onOpenCreateModal }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showingFavorites, setShowingFavorites] = useState(false);
-  console.log(isAuthenticated);
   const { fetchNotas, fetchFavoritos } = useNotaContext()
+  const { isAuthenticated, logout } = useAuth()
 
   const handleFavorites = async () => {
     if (showingFavorites) {
@@ -31,34 +31,6 @@ const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas, onOpenCreateMo
     }
 
     setShowingFavorites((prev) => !prev);
-  };
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch("http://localhost:5001/check-auth", {
-          method: "GET",
-          credentials: "include",
-        });
-        const data = await response.json();
-        setIsAuthenticated(data.authenticated);
-      } catch (error) {
-        console.log("Error al verificar la autenticación:", error);
-      }
-    };
-    checkAuth();
-  }, []);
-
-  const handleLogout = async () => {
-    try {
-      await fetch("http://localhost:5001/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-      setIsAuthenticated(false);
-    } catch (error) {
-      console.log("Error al cerrar sesión:", error);
-    }
   };
 
   return (
@@ -108,7 +80,7 @@ const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas, onOpenCreateMo
           ) : (
             <li>
               <button
-                onClick={handleLogout}
+                onClick={logout}
                 className="flex items-center hover:text-gray-300"
               >
                 <ArrowLeftEndOnRectangleIcon className="mr-2 h-6 w-6" />

@@ -6,6 +6,7 @@ import {
   HeartIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
+import Swal from 'sweetalert2'
 
 import { useAuth } from "../context/AuthProvider";
 import { useNotaContext } from "../context/NotaProvider";
@@ -24,6 +25,27 @@ const  Card: React.FC<CardProps> = ({
   if (!nota) {
     return null;
   }
+
+  const confirmDelete = async () => {
+    const result = await Swal.fire({
+      title: '¿Estas seguro?',
+      text: 'El cambio es irreversible',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Borrar'
+    });
+
+    if (!result.isConfirmed) return;
+
+    await deleteNota(nota.idnota);
+    await Swal.fire({
+      title: 'Eliminado',
+      text: 'La nota fue eliminada',
+      icon: 'success'
+    });
+  };
 
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-100/60">
@@ -53,7 +75,7 @@ const  Card: React.FC<CardProps> = ({
             alt={nota.titulo}
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          <div className="absolute inset-0 bg-linear-to-t from-slate-950/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </div>
       )}
 
@@ -81,11 +103,7 @@ const  Card: React.FC<CardProps> = ({
           <div className="flex items-center justify-between gap-3">
             <button
               type="button"
-              onClick={() => {
-                if (window.confirm("¿Quieres eliminar esta nota?")) {
-                  void deleteNota(nota.idnota);
-                }
-              }}
+              onClick={() => void confirmDelete()}
               className="inline-flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold bg-red-100 text-red-700 transition-colors hover:bg-red-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
             >
               <TrashIcon className="h-4 w-4" aria-hidden="true" />
