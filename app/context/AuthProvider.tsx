@@ -8,6 +8,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [usuario, setUsuario] = useState("")
 
     useEffect(() => {
         const checkAuthStatus = async () => {
@@ -16,10 +17,17 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({children}) 
                     credentials: "include"
                 })
                 const data = await response.json()
-                setIsAuthenticated(data.authenticated)
+                if (data.authenticated) {
+                    setIsAuthenticated(data.authenticated)
+                    setUsuario(data.usuario)
+                } else {
+                    setIsAuthenticated(false)
+                     setUsuario("")
+                }
             } catch (error) {
                 console.log('Error al verificar el estado de autenticación', error)
                 setIsAuthenticated(false)
+                setUsuario("")
             } finally {
                 setLoading(false)
             }
@@ -27,11 +35,33 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({children}) 
         checkAuthStatus()
     }, [])
 
+    const register = async (usuario:string, correo:string, password:string ): Promise<{'success':boolean, 'message':string}> => {
+        try {
+            const response = await fetch("http://localhost:5001/register",{
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({usuario, correo, password})
+            })
+
+            if (response.ok) {
+                const data = await response.json()
+                setIsAuthenticated(true)
+                setUsuario(data.usuario)
+                return {success: true, message:'Registro exitoso'}
+            } else {
+                return {success: false, message:'Registro no exitoso'}
+            }
+        } catch (error) {
+            console.log('Error al registrarse: ', error)
+            return {success: false, message:'Registro no exitoso'}
+        }
+    }
+
     const login = () => setIsAuthenticated(true)
     const logout = () => setIsAuthenticated(false)
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, loading, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, loading, login, logout, usuario, register }}>
             { children }
         </AuthContext.Provider>
     )

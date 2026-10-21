@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const inputClass =
@@ -85,6 +86,18 @@ const Login = () => {
                         Iniciar Sesión
                     </button>
                 </form>
+
+                <div className="mt-6 border-t border-slate-200 pt-6 text-center dark:border-slate-800">
+                    <p className="mb-3 text-sm text-slate-600 dark:text-slate-400">
+                        ¿No tienes una cuenta?
+                    </p>
+                    <Link
+                        href="/page/register"
+                        className="inline-flex w-full items-center justify-center rounded-lg border border-indigo-200 px-4 py-2.5 text-sm font-semibold text-indigo-600 transition-colors hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-indigo-400/40 dark:text-indigo-400 dark:hover:bg-indigo-500/10 dark:focus:ring-offset-slate-900"
+                    >
+                        Crear una cuenta
+                    </Link>
+                </div>
             </div>
         </div>
     )

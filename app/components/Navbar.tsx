@@ -4,7 +4,8 @@ import Link from "next/link";
 import {
   ArrowLeftEndOnRectangleIcon,
   HeartIcon,
-  PlusCircleIcon
+  PlusCircleIcon,
+  UserCircleIcon,
 } from "@heroicons/react/24/solid";
 
 import SearchBar from "./SearchBar";
@@ -21,7 +22,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas, onOpenCreateModal }) => {
   const [showingFavorites, setShowingFavorites] = useState(false);
   const { fetchNotas, fetchFavoritos } = useNotaContext()
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, logout, usuario } = useAuth()
 
   const handleFavorites = async () => {
     if (showingFavorites) {
@@ -48,6 +49,14 @@ const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas, onOpenCreateMo
         <ul className="flex space-x-6 items-center">
           {isAuthenticated && (
             <>
+              {
+                usuario && (
+                  <li className="flex items-center gap-2">
+                    <UserCircleIcon className="h-6 w-6" aria-hidden="true" />
+                    <span>{usuario}</span>
+                  </li>
+                )
+              }
               <button
                 className="flex items-center hover:text-gray-300"
                 onClick={() => void handleFavorites()}
