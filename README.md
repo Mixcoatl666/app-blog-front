@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Blog de Notas
 
-## Getting Started
+![Estado](https://img.shields.io/badge/estado-terminado%20%7C%20archivado-lightgrey)
+![Next.js](https://img.shields.io/badge/Next.js-16.3.6-black?logo=next.js)
+![React](https://img.shields.io/badge/React-19.2.8-61DAFB?logo=react)
+![Flask](https://img.shields.io/badge/API-Flask-black?logo=flask)
+![PostgreSQL](https://img.shields.io/badge/Base%20de%20datos-PostgreSQL-4169E1?logo=postgresql)
 
-First, run the development server:
+> **Proyecto terminado y archivado.** Se creó como ejercicio de aprendizaje de Next.js, Flask y PostgreSQL. No se planean nuevas funciones ni desarrollo activo.
+
+Aplicación web para publicar y consultar notas. El frontend está hecho con Next.js y consume una API Flask independiente, que persiste los datos en PostgreSQL.
+
+## Funcionalidades
+
+- Registro e inicio/cierre de sesión con cookies de sesión.
+- Listado, búsqueda y detalle de notas.
+- Creación y eliminación de notas propias.
+- Filtro de notas favoritas y estado visual del favorito.
+- Diseño adaptable con Tailwind CSS.
+
+## Tecnologías
+
+- Next.js `16.3.6` y React `19.2.8`
+- TypeScript y Tailwind CSS `4`
+- Flask API y PostgreSQL (backend independiente)
+- Heroicons y SweetAlert2
+
+## Ejecución local
+
+Necesitas Node.js y pnpm. La API Flask debe estar configurada y ejecutándose en `http://localhost:5001`; consulta el README del repositorio del backend para configurar Python, PostgreSQL y sus variables de entorno.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre <http://localhost:3000>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Verificación
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm lint
+pnpm exec tsc --noEmit
+pnpm build
+```
 
-## Learn More
+No hay una suite de pruebas automatizadas configurada.
 
-To learn more about Next.js, take a look at the following resources:
+## Rutas principales
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/` — lista de notas.
+- `/page/login` — inicio de sesión.
+- `/page/register` — registro.
+- `/page/nota/[id]` — detalle de una nota.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+La URL de la API está definida actualmente en el frontend como `http://localhost:5001`. Las peticiones de sesión dependen de cookies y de que Flask permita credenciales por CORS.

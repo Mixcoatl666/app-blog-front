@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/AuthProvider";
 
 const inputClass =
     "w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/30";
@@ -13,21 +14,28 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const router = useRouter();
+    const { login } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:5001/login", {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ correo, password }),
-        });
+        try {
+            const response = await fetch("http://localhost:5001/login", {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ correo, password }),
+            });
 
-        if (response.ok) {
+            if (!response.ok) {
+                const data = await response.json();
+                setError(data.message || data.error || "Error al iniciar sesión");
+                return;
+            }
+
+            await login();
             router.push("/");
-        } else {
-            const data = await response.json();
-            setError(data.message || "Error al iniciar sesión");
+        } catch {
+            setError("No se pudo iniciar sesión. Inténtalo de nuevo.");
         }
     }
 

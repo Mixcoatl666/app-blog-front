@@ -1,21 +1,14 @@
 "use client";
 import { useState } from "react";
 
-import { AuthProvider } from "./context/AuthProvider";
-import { NotaProvider, useNotaContext } from "./context/NotaProvider";
+import { useNotaContext } from "./context/NotaProvider";
 
 import Card from "./components/Card";
 import Layout from "./components/Layout";
 import { CreateNotaModal } from "./components/CreateNotaModal";
 
 export default function Home() {
-return (
-  <NotaProvider>
-    <AuthProvider>
-      <HomeContent />
-    </AuthProvider> 
-  </NotaProvider>
-)
+  return <HomeContent />;
 }
 
 function HomeContent(){

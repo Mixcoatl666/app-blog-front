@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRightIcon,
   HeartIcon,
@@ -75,9 +76,12 @@ const Card: React.FC<CardProps> = ({ id, deleteNota }) => {
 
       {nota.imagen_url && (
         <div className="relative aspect-video overflow-hidden bg-slate-100">
-          <img
+          <Image
             src={nota.imagen_url}
             alt={nota.titulo}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            unoptimized
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-linear-to-t from-slate-950/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />

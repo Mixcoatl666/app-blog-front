@@ -16,7 +16,7 @@ import { useAuth } from "../context/AuthProvider";
 interface NavbarProps {
   notas: Nota[]
   setFilteredNotas?: (notas: Nota[]) => void
-  onOpenCreateModal: () => void
+  onOpenCreateModal?: () => void
 }
 
 const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas, onOpenCreateModal }) => {
@@ -65,15 +65,17 @@ const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas, onOpenCreateMo
                 <HeartIcon className="mr-2 h-5 w-5" />
                 Favoritos
               </button>
-              <li>
-                <button
-                  onClick={onOpenCreateModal}
-                  className="flex items-center hover:text-gray-300"
-                >
-                  <PlusCircleIcon className="mr-2 h-6 w-6" />
-                  Crear Nota
-                </button>
-              </li>
+              {onOpenCreateModal && (
+                <li>
+                  <button
+                    onClick={onOpenCreateModal}
+                    className="flex items-center hover:text-gray-300"
+                  >
+                    <PlusCircleIcon className="mr-2 h-6 w-6" />
+                    Crear Nota
+                  </button>
+                </li>
+              )}
             </>
           )}
           {!isAuthenticated ? (
@@ -89,7 +91,7 @@ const Navbar: React.FC<NavbarProps> = ({ notas, setFilteredNotas, onOpenCreateMo
           ) : (
             <li>
               <button
-                onClick={logout}
+                onClick={() => void logout()}
                 className="flex items-center hover:text-gray-300"
               >
                 <ArrowLeftEndOnRectangleIcon className="mr-2 h-6 w-6" />

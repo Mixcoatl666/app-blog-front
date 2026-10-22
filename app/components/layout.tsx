@@ -6,7 +6,7 @@ import { useNotaContext } from "../context/NotaProvider";
 
 interface LayoutProps {
     children: React.ReactNode
-    onOpenCreateModal: () => void
+    onOpenCreateModal?: () => void
 }
 
 const Layout: React.FC<LayoutProps> =  ({ children, onOpenCreateModal  }) => {

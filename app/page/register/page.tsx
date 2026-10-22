@@ -29,7 +29,7 @@ const Register = () => {
             const result = await register(usuario, correo, password);
 
             if (result.success) {
-                router.push("/");
+                router.push("/page/login");
             } else {
                 setError(result.message);
             }

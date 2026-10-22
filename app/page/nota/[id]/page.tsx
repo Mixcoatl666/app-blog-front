@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 import Layout from "../../../components/Layout";
 
@@ -39,8 +40,15 @@ const NotaPage = ({ params }: { params: Promise<{ id: string }> }) => {
       <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
         {
           nota.imagen_url && (
-            <div className="mb-6">
-              <img src={nota.imagen_url} alt={nota.titulo} className="w-full h-full object-cover rounded-lg shadow-md"/>
+            <div className="relative mb-6 aspect-video overflow-hidden rounded-lg shadow-md">
+              <Image
+                src={nota.imagen_url}
+                alt={nota.titulo}
+                fill
+                sizes="(min-width: 768px) 768px, 100vw"
+                unoptimized
+                className="object-cover"
+              />
             </div>
           )
         }
